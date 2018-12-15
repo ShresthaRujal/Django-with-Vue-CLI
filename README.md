@@ -134,6 +134,7 @@ output: {
 
 ```
 
+## if want to try with simple display of index template follow below..
 ## index.html 
 
 ```bash
