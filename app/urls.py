@@ -5,10 +5,10 @@ from app import views
 router = DefaultRouter()
 router.register('login',views.LoginViewSet,base_name='login')
 router.register('feed',views.UserProfileFeedViewSet)
-router.register('register',views.UserProfileViewSet)
 router.register('profile',views.UserProfileViewSet)
 router.register('post',views.PostViewSet)
-router.register('comment',views.CommentViewSet )
+router.register('comment',views.CommentViewSet)
+router.register('draft',views.DraftViewSet)
 
 from django.urls import path,include
 

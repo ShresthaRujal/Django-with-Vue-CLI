@@ -1,9 +1,6 @@
 from rest_framework import serializers
 from app import models
 
-class HelloSerializer(serializers.Serializer):
-    name=serializers.CharField(max_length=25)
-
 class UserProfileSerialzer(serializers.ModelSerializer):
     class Meta:
         model = models.UserProfile
@@ -26,9 +23,10 @@ class ProfileFeedItemSerializer(serializers.ModelSerializer):
         extra_kwargs = {'user_profile':{'read_only':True}}
 
 class CommentSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     class Meta:
         model = models.Comment
-        fields = ('post','author','text','created_on','approved_on')
+        fields = ('id','post','author','text','created_on','approved_on')
         read_only_fields = ('created_on','approved_on',)
 
 class PostSerializer(serializers.ModelSerializer):
@@ -37,3 +35,21 @@ class PostSerializer(serializers.ModelSerializer):
         model = models.Post
         fields = ('id','user_profile','title','gener','text','created_on','published_on','comments')
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
+
+
+class DraftSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Post
+        fields = ('id','user_profile','title','gener','text','created_on','published_on','comments')
+        extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
+
+    def create(self, validated_data):
+        return models.Post.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.title = validated_data.get('title',instance.title)
+        instance.gener = validated_data.get('gener',instance.gener)
+        instance.text = validated_data.get('text', instance.text)
+        instance.save()
+        return instance
+

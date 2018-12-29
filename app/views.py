@@ -4,9 +4,10 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework import filters
 from rest_framework.decorators import action
+from django.views.decorators.http import require_http_methods
 
 from app import serializers
 from app import models
@@ -23,8 +24,15 @@ class LoginViewSet(viewsets.ViewSet):
         """use the ObtainAuthToken to validate and crate a token."""
         return CustomAuthToken().post(request)
 
-class UserProfileViewSet(viewsets.ModelViewSet):
+class UserProfileFeedViewSet(viewsets.ModelViewSet):
+    authentication_classes = (TokenAuthentication,)
+    serializer_class = serializers.ProfileFeedItemSerializer
+    queryset =  models.ProfileFeedItem.objects.all()
 
+    def perform_create(self, serilizer):
+        serilizer.save()
+
+class UserProfileViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.UserProfileSerialzer
     queryset = models.UserProfile.objects.all()
     authentication_classes =(TokenAuthentication,)
@@ -70,3 +78,45 @@ class CommentViewSet(viewsets.ModelViewSet):
     authentication_classes = (TokenAuthentication,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('author',)
+
+
+class DraftViewSet(viewsets.ModelViewSet):
+    serializer_class = serializers.PostSerializer
+    queryset = models.Post.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes=(IsAuthenticated,)
+    lookup_field = 'id'
+    http_method_names = ['get', 'put', 'delete','patch']
+
+
+    # http_method_names = ['get', 'put', 'delete','patch']
+    # serializer_class = serializers.PostSerializer
+    # authentication_classes = (TokenAuthentication,)
+    # permission_classes=(IsAuthenticated,)
+
+    # def list(self, request):
+    #     print(request.data)
+    #     queryset = models.Post.objects.filter(published_on__isnull=True)
+    #     serializer = serializers.PostSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # def retrieve(self, request, pk=None):
+    #     queryset = models.Post.objects.get(pk=pk)
+    #     serializer = serializers.PostSerializer(queryset)
+    #     return Response(serializer.data)
+
+    # def update(self, request, pk=None):
+    #     instance = models.Post.objects.get(pk=pk)
+    #     serializer = serializers.PostSerializer(instance, data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     serializer.save()
+
+    # def partial_update(self, request, pk=None):
+    #     instance = models.Post.objects.get(pk=pk)
+    #     print()
+    #     pass
+
+    # def destroy(self, request, pk=None):
+    #     instance = models.Post.objects.get(pk=pk)
+    #     instance.delete()    
+    #     return Response(status=202)

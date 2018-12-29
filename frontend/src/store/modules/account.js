@@ -50,6 +50,17 @@ const actions = {
         console.log('rujal')
         localStorage.removeItem('token');
         commit('logout');
+    },
+    register({commit},payloads){
+        console.log(payloads)
+        return new Promise((resolve,reject) => {
+            Vue.http.post('api/profile/',payloads)
+            .then(response => {
+                commit('register');
+            }, error => {
+                reject(error)
+            })
+        })
     }
 }
 

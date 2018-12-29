@@ -11,9 +11,13 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "vue": "^2.5.11",
+    "express": "^4.16.4",
+    "prerender": "^5.4.5",
+    "prerender-spa-plugin": "^3.4.0",
+    "vue": "^2.5.21",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.2",
+    "vue-server-renderer": "^2.5.21",
     "vuex": "^3.0.1"
   },
   "browserslist": [
