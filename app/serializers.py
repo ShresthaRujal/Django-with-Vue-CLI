@@ -40,7 +40,7 @@ class PostSerializer(serializers.ModelSerializer):
 class DraftSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Post
-        fields = ('id','user_profile','title','gener','text','created_on','published_on','comments')
+        fields = ('id','user_profile','title','gener','text','created_on','published_on',)
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
 
     def create(self, validated_data):

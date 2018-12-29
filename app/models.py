@@ -1,4 +1,6 @@
 from django.db import models
+from django.shortcuts import render,get_object_or_404
+from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
 
 # Create your models here.
@@ -8,7 +10,7 @@ class UserProfileManager(BaseUserManager):
         if not email:
             raise ValueError('User must have and email address.')
 
-#Normalize the email address by lowercasing the domain part of it.
+        #Normalize the email address by lowercasing the domain part of it.
         email=self.normalize_email(email)
         user = self.model(email=email,name=name)
 
@@ -49,6 +51,10 @@ class ProfileFeedItem(models.Model):
     def __str__(self):
         return self.status_text
 
+# class PostManager(models.Manager):
+
+    
+
 
 class Post(models.Model):
     user_profile = models.ForeignKey(UserProfile,on_delete= models.CASCADE)
@@ -58,9 +64,19 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     published_on = models.DateTimeField(null = True)
 
+    # objects = PostManager()
+
+    class Meta:
+        ordering = ['-published_on']
+
     @property
     def comments(self):
         return self.comment_set.all()
+    
+    def publish(self):        
+        self.published_on=timezone.now()
+        self.save()
+        return self
 
     def __str__(self):
         return self.title

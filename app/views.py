@@ -1,4 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
 from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.response import Response
@@ -7,7 +9,6 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework import filters
 from rest_framework.decorators import action
-from django.views.decorators.http import require_http_methods
 
 from app import serializers
 from app import models
@@ -42,12 +43,13 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PostSerializer
-    queryset = models.Post.objects.all()
+    queryset = models.Post.objects.exclude(published_on__isnull=True).order_by('-published_on')
     authentication_classes = (TokenAuthentication,)
     permission_classes=(IsAuthenticatedOrReadOnly,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('author','gener',)
     lookup_field = 'id'
+    # http_method_names = ['get', 'put', 'delete','patch']
 
     def perform_create(self, serializer):
         print(self.request.user)
@@ -57,7 +59,7 @@ class PostViewSet(viewsets.ModelViewSet):
     def comments(self, request,id=None):
         post = self.get_object()
         comments = models.Comment.objects.filter(post=post)
-        serializer = serializers.CommentSerializer()
+        serializer = serializers.CommentSerializer(comments)
         return Response(serializer.data,status=200)
 
     @action(detail=True,methods=['POST'])
@@ -81,13 +83,26 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 
 class DraftViewSet(viewsets.ModelViewSet):
-    serializer_class = serializers.PostSerializer
-    queryset = models.Post.objects.all()
+    serializer_class = serializers.DraftSerializer
     authentication_classes = (TokenAuthentication,)
     permission_classes=(IsAuthenticated,)
     lookup_field = 'id'
-    http_method_names = ['get', 'put', 'delete','patch']
 
+    def get_queryset(self):
+        user_id = self.request.user.id
+        queryset = models.Post.objects.filter(published_on__isnull=True).filter(user_profile_id=user_id).order_by('-created_on')
+        return queryset
+    
+    def perform_create(self, serializer):
+        print(self.request.user)
+        serializer.save(user_profile=self.request.user)
+
+    @action(detail=True,methods=['GET'])
+    def publish(self, request,id=None):
+        draft = self.get_object()
+        draft.publish()
+        serializer = serializers.DraftSerializer(draft)
+        return Response(serializer.data,status=200)
 
     # http_method_names = ['get', 'put', 'delete','patch']
     # serializer_class = serializers.PostSerializer
