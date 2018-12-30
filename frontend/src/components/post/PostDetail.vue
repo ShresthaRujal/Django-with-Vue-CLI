@@ -7,7 +7,8 @@
          {{postDetail.published_date}}
       </div>
       <div>
-         <button class="btn btn-default">Delete</button>
+         <button class="btn btn-primary btn-sm like-button">Like</button>
+         <button class="btn btn-primary btn-sm">Share</button>
       </div>
       <p class="postcontent">{{postDetail.text}}</p>
       <hr>
@@ -48,3 +49,4 @@ export default {
     }
 }
 </script>
+

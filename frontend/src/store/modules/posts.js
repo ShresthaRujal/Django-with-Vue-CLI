@@ -8,7 +8,6 @@ const state = {
 const mutations={
     setPost : (state,posts) => {
         state.posts = posts;
-        console.log(state.posts)
     },
     setPostDetail : (state,post) => {
         state.post = post;
@@ -38,8 +37,6 @@ const actions = {
         return new Promise((resolve, reject) => {
             Vue.http.post('api/post/',post)
             .then(response =>{
-                console.log(request.data)
-                // commit('setPost', posts);
                 resolve(response);
             }, error => {
                 reject(error);

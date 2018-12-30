@@ -19,6 +19,7 @@ from app.authtoken import CustomAuthToken
 # Create your views here.
 class LoginViewSet(viewsets.ViewSet):
     """checks email and password and return auth token"""
+    print('hllo')
     serializer_class = AuthTokenSerializer
 
     def create(self,request):

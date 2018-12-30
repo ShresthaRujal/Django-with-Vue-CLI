@@ -47,8 +47,7 @@ const actions = {
        })
     },
     logout({commit}){
-        console.log('rujal')
-        localStorage.removeItem('token');
+        console.log('logout')
         commit('logout');
     },
     register({commit},payloads){
