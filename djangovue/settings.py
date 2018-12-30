@@ -153,6 +153,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),'static-server','media_root')
+MEDIA_URL= '/media/'
+
 AUTH_USER_MODEL= 'app.UserProfile'
 
 # webpack loader

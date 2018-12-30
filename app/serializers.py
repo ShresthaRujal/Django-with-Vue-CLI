@@ -33,7 +33,7 @@ class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True,required=False)
     class Meta:
         model = models.Post
-        fields = ('id','user_profile','title','gener','text','created_on','published_on','comments')
+        fields = ('id','user_profile','title','gener','text','created_on','published_on','image','comments')
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
 
 

@@ -53,8 +53,9 @@ class ProfileFeedItem(models.Model):
 
 # class PostManager(models.Manager):
 
-    
-
+  
+def upload_status_image(instance,filename):
+    return "status/{user}/{filename}".format(user=instance.user_profile,filename=filename)
 
 class Post(models.Model):
     user_profile = models.ForeignKey(UserProfile,on_delete= models.CASCADE)
@@ -63,6 +64,7 @@ class Post(models.Model):
     gener = models.CharField(max_length=100)
     created_on = models.DateTimeField(auto_now_add=True)
     published_on = models.DateTimeField(null = True)
+    image = models.ImageField(upload_to=upload_status_image,null=True,blank=True)
 
     # objects = PostManager()
 
