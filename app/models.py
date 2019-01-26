@@ -24,12 +24,18 @@ class UserProfileManager(BaseUserManager):
         user.is_staff = True
         user.save(using=self._db)
 
+    def send_email(self,name,email,password=None):
+        user = self.model(email=email,name=name)
+        user.is_email_sent = True
+        user.save(using=self._db)
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Represents a user profile"""
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=200)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
+    is_email_sent = models.BooleanField(default=False)
 
     objects = UserProfileManager()
 

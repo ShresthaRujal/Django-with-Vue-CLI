@@ -1,14 +1,18 @@
 <template>
-    <div class="col-sm-6 col-md-4">
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">{{draft.title}}</h5>
-                <h6 class="card-subtitle mb-2 text-muted"><small>Author: {{draft.author}}</small></h6>
+<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+        <div class="box-part text-center shadow p-3 mb-5 bg-white rounded">
+            <div class="card-header">
+				<h4 class="my-0 font-weight-normal">{{draft.title}}</h4>
+			</div>
+            <div class="card-body ">
+                <h6 class="card-subtitle mb-2 text-muted"><small>Author: {{username}}</small></h6>
                 <p class="card-text">{{draft.text}}</p>
-               <router-link :to="'/drafts/'+draft.id" tag="li" @click.native="goTodetail" class="btn btn-warning "><a>Open</a></router-link> 
+                <router-link :to="'/drafts/'+draft.id" tag="li" @click.native="goTodetail" ><a class="btn btn-warning">Open</a></router-link>
+                              
             </div>
-        </div><br>
+        </div>
     </div>
+    
 </template>
 
 <script>
@@ -18,7 +22,12 @@ export default {
         goTodetail(){
             console.log(this.draft)
             this.$store.dispatch('initDraftDetail',this.draft);
-            // this.$router.push({name:'draftdetail',params: { id: this.draft.id }})
+        }
+    },
+    computed:{
+        username(){
+            name = this.draft.user_profile.name
+            return name.charAt(0).toUpperCase() + name.slice(1)
         }
     }
 }
@@ -30,6 +39,9 @@ a{
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
     
+}
+li{
+    list-style-type: none;
 }
 </style>
 

@@ -12,6 +12,7 @@ router.register('draft',views.DraftViewSet,base_name='draft')
 
 from django.urls import path,include
 
+
 urlpatterns = [
     path('', include(router.urls)),
 ]

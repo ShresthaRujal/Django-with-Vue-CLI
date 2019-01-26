@@ -17,12 +17,12 @@ Vue.http.interceptors.push((request,next) => {
     if(token){
       console.log('yes header '+token)
       request.headers.set('Authorization',"Token "+token);
-      localStorage.removeItem('token')
+      // localStorage.removeItem('token')
     }    
     next();
 });
 
-const router = new VueRouter({
+export const router = new VueRouter({
   mode:'history',
   routes,
 })

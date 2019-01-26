@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import account from './account';
+import { router } from '../../main.js'
 // single object containing all application level state and serves as single source of truth
 const state = {
     drafts:[],
@@ -55,10 +57,18 @@ const actions = {
 
 const getters = {
     drafts: state => {
-        return state.drafts;
+        if(account.state.isLoggedIn){
+            return state.drafts;
+        }else{
+            router.push("/login")
+        }
     },
     draftDetail : state => {
-        return state.draft;
+        if(account.state.isLoggedIn){
+            return state.draft;
+        }else{
+            router.push("/login")
+        }
     }
 };
 

@@ -35,6 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
         model = models.Post
         fields = ('id','user_profile','title','gener','text','created_on','published_on','image','comments')
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
+        depth = 1
 
 
 class DraftSerializer(serializers.ModelSerializer):
@@ -42,6 +43,7 @@ class DraftSerializer(serializers.ModelSerializer):
         model = models.Post
         fields = ('id','user_profile','title','gener','text','created_on','published_on',)
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
+        depth = 1
 
     def create(self, validated_data):
         return models.Post.objects.create(**validated_data)

@@ -21,7 +21,8 @@
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.2",
     "vue-server-renderer": "^2.5.21",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "vuex-persistedstate": "^2.5.4"
   },
   "browserslist": [
     "> 1%",

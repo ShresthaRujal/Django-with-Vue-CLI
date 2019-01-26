@@ -20,7 +20,7 @@ const mutations = {
     },
 
     logout: (state)=>{
-        console.log('logout')
+        localStorage.removeItem('token')
         state.isLoggedIn=false;
         localStorage.removeItem('token');
     },
@@ -47,7 +47,6 @@ const actions = {
        })
     },
     logout({commit}){
-        console.log('logout')
         commit('logout');
     },
     register({commit},payloads){

@@ -1,8 +1,4 @@
 <template>
-    <!-- <div class="row">
-        <app-post v-for="post in posts" :key="post.id" :post="post"></app-post>
-        
-    </div> -->
     <div>
         <router-view></router-view>
     </div>

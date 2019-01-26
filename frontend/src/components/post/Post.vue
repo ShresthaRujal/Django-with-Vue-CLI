@@ -5,7 +5,7 @@
 				<h4 class="my-0 font-weight-normal">{{post.title}}</h4>
 			</div>
             <div class="card-body ">
-                <h6 class="card-subtitle mb-2 text-muted"><small>Author: {{post.author}}</small></h6>
+                <h6 class="card-subtitle mb-2 text-muted"><small>Author: {{username}}</small></h6>
                 <p class="card-text">{{post.text}}</p>
                 <router-link :to="'/posts/'+post.id" tag="li" @click.native="goTodetail" ><a class="btn btn-danger">Read</a></router-link>
                 <!-- ALTERNATIVE WAY to childern route-->
@@ -48,6 +48,12 @@ export default {
             //  ALTERNATIVE WAY to children route
             // this.$router.push({name:'postdetail',params: { id: this.post.id }})
         }
+    },
+    computed:{
+        username(){
+            name = this.post.user_profile.name
+            return name.charAt(0).toUpperCase() + name.slice(1)
+        }
     }
 }
 </script>
@@ -60,15 +66,6 @@ a{
 }
 li{
     list-style-type: none;
-}
-.card-header-background{
-    border: 2px solid rgb(78, 192, 87);
-    border-radius: 5px;
-}
-.card-background{ 
-    border: 2px solid #924ec09a;
-    border-radius: 5px;
-    border-style: outset;
 }
 </style>
 

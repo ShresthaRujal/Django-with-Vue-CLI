@@ -10,10 +10,12 @@ import DraftList from '../components/draft/DraftList.vue';
 import DraftDetail from '../components/draft/DraftDetail.vue';
 import NewComment from '../components/comment/NewComment.vue';
 import NewPost from '../components/post/NewPost.vue';
+import Profile from '../components/user/Profile.vue';
 
 
 export const routes = [
     { path:'/', component:Home },
+    { path:'/profile', component:Profile },
     { path:'/posts', component:Posts, children:[
         {path:'',component: PostList},
         {path:':id',component: PostDetail}

@@ -1,9 +1,11 @@
 <template>
-    <div class="row">
-        <app-Draft v-for="draft in drafts" :key="draft.id" :draft="draft"></app-Draft>
-        <router-view></router-view>
+    <div class="box">
+        <div class="container">
+            <div class="row">
+                <app-Draft v-for="draft in drafts" :key="draft.id" :draft="draft"></app-Draft>
+            </div>
+        </div>
     </div>
-    
 </template>
 
 <script>
