@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import users from './users';
+import { router } from '../../main.js';
 
 const state = {
     // if the user is logged in by checking if the user has token in browser local storage
@@ -16,7 +18,10 @@ const mutations = {
     loginSuccess: (state,user) => {
         state.isLoggedIn = true;
         state.user = user;
+        users.state.userx =user;
         state.user.name = user.name.toUpperCase();
+        console.log(user.image)
+        router.push('/posts')
     },
 
     logout: (state)=>{
@@ -33,13 +38,14 @@ const mutations = {
 //commits are payloads of information that send data from your application to your store
 //way to change state in Vuex store is by commiting mutation and must be synchronized
 const actions = {
-    login({commit},payloads){
+      login({commit},payloads){
         return new Promise((resolve, reject) => {
             Vue.http.post('api/login/',payloads)
             .then(response =>{
                 localStorage.setItem('token', response.data.token);
                 const user = response.data.user;
                 commit('loginSuccess', user);
+                commit('saveUser',user);
                 resolve(response);
             }, error => {
                 reject(error);

@@ -1,71 +1,56 @@
-import { userService } from '../../services';
-
+import Vue from 'vue';
+import store from '../store';
 const state = {
-    all: {}
-};
-
-const actions = {
-    getAll({ commit }) {
-        commit('getAllRequest');
-
-        userService.getAll()
-            .then(
-                users => commit('getAllSuccess', users),
-                error => commit('getAllFailure', error)
-            );
-    },
-
-    delete({ commit }, id) {
-        commit('deleteRequest', id);
-
-        userService.delete(id)
-            .then(
-                user => commit('deleteSuccess', id),
-                error => commit('deleteSuccess', { id, error: error.toString() })
-            );
-    }
+    // all: {}
+    
+    userx : {}
 };
 
 const mutations = {
-    getAllRequest(state) {
-        state.all = { loading: true };
+    uploadSuccess(state){
+        console.log('update Successfull')
     },
-    getAllSuccess(state, users) {
-        state.all = { items: users };
-    },
-    getAllFailure(state, error) {
-        state.all = { error };
-    },
-    deleteRequest(state, id) {
-        // add 'deleting:true' property to user being deleted
-        state.all.items = state.all.items.map(user =>
-            user.id === id
-                ? { ...user, deleting: true }
-                : user
-        )
-    },
-    deleteSuccess(state, id) {
-        // remove deleted user from state
-        state.all.items = state.all.items.filter(user => user.id !== id)
-    },
-    deleteFailure(state, { id, error }) {
-        // remove 'deleting:true' property and add 'deleteError:[error]' property to user 
-        state.all.items = state.items.map(user => {
-            if (user.id === id) {
-                // make copy of user without 'deleting:true' property
-                const { deleting, ...userCopy } = user;
-                // return copy of user with 'deleteError:[error]' property
-                return { ...userCopy, deleteError: error };
-            }
-
-            return user;
-        })
+    saveUser(state,user){
+        console.log('sav')
+        state.userx = user
     }
 };
 
-export const users = {
-    namespaced: true,
+
+const actions = {
+    uploadFile({commit},payload){
+        return new Promise((resolve, reject) => {
+            const id =store.getters.user.id
+            var formData = new FormData();
+            if(payload.id){
+                formData.append("id",payload.id)
+                formData.append("image_file",payload.image_file)
+            }
+            else{
+                 formData.append("image_file",payload.image_file)
+            }
+
+            Vue.http.put('api/profile/'+id+'/upload_pic/',formData)
+            .then(response =>{
+                console.log(response)
+                commit('uploadSuccess')
+                resolve(response);
+            }, error => {
+                reject(error);
+            });
+       })
+    }
+};
+
+const getters = {
+    userx : state => {
+        return state.user;
+    }
+}
+
+export default {
     state,
     actions,
-    mutations
+    mutations,
+    getters
 };

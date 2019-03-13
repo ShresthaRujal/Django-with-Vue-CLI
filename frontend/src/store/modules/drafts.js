@@ -28,7 +28,7 @@ const actions = {
             .then(response =>{
                 const drafts = response.data;
                 console.log(drafts);
-                
+
                 commit('setDraft', drafts);
                 resolve(response);
             }, error => {
@@ -39,19 +39,47 @@ const actions = {
     initDraftDetail : ({commit},draft) => {
         commit('setDraftDetail',draft);
     },
-    publish:({commit,dispatch})=>{
-        const id=state.draft.id
-    //     return new Promise((resolve, reject) => {
-    //         Vue.http.get('api/draft/'+id+'/publish/')
-    //         .then(response =>{
-    //             const published_draft = response.data;
-    //             console.log(published_draft);
-    //             resolve(response);
-    //         }, error => {
-    //             reject(error);
-    //         });
-    //    })
+    getDraft : ({commit},draftId) => {
+      console.log("called called"+ draftId)
+        return new Promise((resolve,reject) =>{
+            Vue.http.get('api/draft/'+draftId+'/')
+            .then(response => {
+                const draft = response.data;
+                console.log(draft)
+                commit('setDraftDetail',draft);
+                resolve(response);
+            },error => {
+                reject(error);
+            })
+      })
+    },
+    publish:({commit,dispatch},draftId)=>{
+        return new Promise((resolve, reject) => {
+            Vue.http.get('api/draft/'+draftId+'/publish/')
+            .then(response =>{
+                const published_draft = response.data;
+                console.log(published_draft);
+                resolve(response);
+            }, error => {
+                reject(error);
+            });
+       })
        dispatch('initPosts')
+    },
+    deletedraft:({commit,dispatch},draftId) =>{
+        const id = state.draft.id || draftId
+        console.log(id)
+        return new Promise((resolve, reject) => {
+            Vue.http.delete('api/draft/'+id+'/')
+            .then(response =>{
+                dispatch('initDrafts')
+                router.push('/drafts')
+                resolve(response);
+            }, error => {
+                reject(error);
+            });
+       })
+
     }
 };
 

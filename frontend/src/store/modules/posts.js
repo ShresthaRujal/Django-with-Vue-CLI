@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { router } from '../../main.js';
 // single object containing all application level state and serves as single source of truth
 const state = {
     posts:[],
@@ -11,6 +12,10 @@ const mutations={
     },
     setPostDetail : (state,post) => {
         state.post = post;
+    },
+    saveNewPost :(state,id) =>{
+        console.log(id)
+        router.push('/drafts/'+id)
     }
 };
 
@@ -33,10 +38,12 @@ const actions = {
     initPostDetail : ({commit},post) => {
         commit('setPostDetail',post);
     },
-    saveNewPost:({commit},post) => {
+    saveNewPost:({commit,dispatch},post) => {
         return new Promise((resolve, reject) => {
             Vue.http.post('api/post/',post)
             .then(response =>{
+                dispatch('getDraft',response.data.id);
+                commit('saveNewPost',response.data.id);
                 resolve(response);
             }, error => {
                 reject(error);
@@ -47,6 +54,7 @@ const actions = {
 
 const getters = {
     posts: state => {
+        console.log("post called")
         return state.posts;
     },
     postDetail : state => {

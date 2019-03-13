@@ -6,8 +6,11 @@ import drafts from './modules/drafts';
 import comments from './modules/comments';
 import * as actions from  './actions';
 import account from './modules/account';
-import createPersistedState from 'vuex-persistedstate'
+import users from './modules/users';
+import createPersistedState from 'vuex-persistedstate';
+import Vuesax from 'vuesax'; //Vuesax styles
 
+Vue.use(Vuesax);
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -19,5 +22,7 @@ export default new Vuex.Store({
         comments,
         account,
         drafts,
-    }
+        users,
+    },
+
 });

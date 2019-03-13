@@ -8,7 +8,7 @@
       </div>
       <div>
           <button class="btn btn-default" @click="publish">Publish</button>
-         <button class="btn btn-danger">Delete</button>
+         <button class="btn btn-danger" @click="deleteDraft">Delete</button>
       </div>
       <p class="draftcontent">{{draftDetail.text}}</p>
       <hr>
@@ -28,7 +28,10 @@ export default {
     methods:{
         publish(){
             console.log(this.$store.getters.draftDetail.id)
-            this.$store.dispatch('publish')
+            this.$store.dispatch('publish',this.$store.getters.draftDetail.id)
+        },
+        deleteDraft(){
+           this.$store.dispatch('deletedraft',this.$store.getters.draftDetail.id)
         }
     }
 }

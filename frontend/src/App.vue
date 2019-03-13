@@ -6,17 +6,22 @@
           <router-view></router-view>
         <!-- </transition> -->
       </div>
-    
   </div>
 </template>
 
 <script>
 import Header from './components/Header.vue';
+import DialogLoader from './components/extra/DialogLoader.vue';
+
 export default {
   components:{
+    djangoLoader:DialogLoader,
     appHeader : Header,
   },
-  created(){
+  mounted() {
+		this.$root.$dialogLoader = this.$refs.dialogLoader;
+	},
+  created() {
     this.$store.dispatch('initPosts');
   }
 }

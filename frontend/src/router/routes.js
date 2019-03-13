@@ -11,11 +11,18 @@ import DraftDetail from '../components/draft/DraftDetail.vue';
 import NewComment from '../components/comment/NewComment.vue';
 import NewPost from '../components/post/NewPost.vue';
 import Profile from '../components/user/Profile.vue';
+import BasicInfo from '../components/user/BasicInfo.vue';
+import Education_work from '../components/user/Education_work.vue';
+import HelloWorld from '../components/extra/HelloWorld.vue';
 
 
 export const routes = [
     { path:'/', component:Home },
-    { path:'/profile', component:Profile },
+    { path:'/profile', component:Profile, children:[
+        {path:'',component:BasicInfo,alias: 'basic_info'},
+        {path:'education_work',component:Education_work},
+        {path:'hello',component:HelloWorld},
+    ] },
     { path:'/posts', component:Posts, children:[
         {path:'',component: PostList},
         {path:':id',component: PostDetail}
