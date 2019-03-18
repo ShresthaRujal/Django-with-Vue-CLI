@@ -5,12 +5,15 @@
                 <div class="box-part text-center shadow p-3 mb-5 bg-white rounded">
                      <ul>
                          <li>
-                             <vs-button @click="popupActivo=true" id="nav_myDiv" class="nav_div_profilePic">
-                                <img v-bind:src="imageData" id="profile_img" width='50' height='40' >
-                            </vs-button> 
+                              <div class="square">
+                                  <vs-button @click="popupActivo=true">
+                                     <img v-bind:src="getUser.image.image_file" id="profile_img">
+                                  </vs-button>
+                              </div>
+
                             <div class="centerx">
                                 <vs-popup class="holamundo"  title="Upload Your Picture" :active.sync="popupActivo">
-                                
+
                                     <div class="centerx">
                                         <!-- <vs-upload limit='2' fileName='image_file' action="http://127.0.0.1:8000/api/profile/6/upload_pic/" @on-success="successUpload" /> -->
                                         <!--<input type="file">
@@ -23,13 +26,13 @@
                                                 cloud_upload
                                                 </i>
                                             </button>
-                                            
+
                                         </div>
                                         <div>
                                             {{getName}}
                                         </div>
                                     </div>
-                                
+
                                 </vs-popup>
                             </div>
 
@@ -44,23 +47,15 @@
                                <router-link to="/profile/education_work" tag="li"> <a href="">Education/Work</a> </router-link>
                              </div>
                          </li>
-                         <li>
-                             <div id='nav_myDiv'>
-                               <h3 @click="test">apple</h3>
-                             </div>
-                         </li>
+
                      </ul>
-                     
-                    
+
+
                 </div></div>
             <div class="col-12 col-md-8">
-                    <router-view></router-view>     
+                    <router-view></router-view>
             </div>
-            <!-- Modal content -->
-       
          </div>
-
-
     </div>
 </template>
 
@@ -72,7 +67,6 @@ export default {
             default_image: "../src/assets/icons/profile_image.jpg",
             popupActivo:false,
             fileData : '',
-            imageData:'',
         }
     },
     computed:{
@@ -80,8 +74,8 @@ export default {
             return this.fileData.name
         },
          getUser(){
+            console.log("called")
             var user = this.$store.getters.user;
-            this.imageData=user.image
             return user;
         }
     },
@@ -109,8 +103,8 @@ export default {
                 this.$store.dispatch('uploadFile',{'image_file':this.fileData})
             }
         },
-        test(){
-            console.log("rujal")
+        getContentImageLink() {
+           console.log("hello world");
         }
     },
 }
@@ -125,15 +119,9 @@ a{
 }
 #nav_myDiv {
     width: 200px;
-    /* height: 150px; */
     margin-top: 0px;
     margin-left: 10px;
     /* border: 1px solid black; */
-}
-.nav_div_profilePic{
-    height: 200px;
-    border: 1px solid black;
-    border-radius: 5px
 }
 #profile_img {
     width: 100%;
@@ -141,6 +129,10 @@ a{
     max-width: 107%;
     max-height: 130%;
     cursor: pointer;
+}
+img{
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
 

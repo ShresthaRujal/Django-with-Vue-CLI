@@ -9,12 +9,14 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly,IsAuthenticated
 from rest_framework import filters
 from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from app import serializers
 from app import models
 from app import permissions
 from app.authtoken import CustomAuthToken
 
+import codecs
 
 # Create your views here.
 class LoginViewSet(viewsets.ViewSet):
@@ -40,6 +42,37 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name','email',)
+    lookup_field = 'id'
+
+
+    @action(detail=True, methods=['PUT'], parser_classes=[MultiPartParser,])
+    def upload_pic(self, request,id=None):
+        user_profile = self.get_object()
+        uploadpic= user_profile.image
+        data = request.data.dict()
+        data['user_profile']=user_profile.id
+        try:
+            bufferImageId=data['id']
+            print(uploadpic.image_file)
+            print(data["image_file"])
+            serializer = serializers.UploadPicSerializer(uploadpic, data = data)
+            if serializer.is_valid():
+                serializer.save()
+                print(serializer.data)
+                return Response(serializer.data, status=201)
+        except KeyError:
+            print("no id")
+            serializer = serializers.UploadPicSerializer(data=data)
+            if serializer.is_valid():
+                print("valid data")
+                serializer.save()
+                print(serializer.data)
+                return Response(serializer.data, status=201)
+
+        print(serializer.data)
+
+        return Response(serializer.data,status=200)
+       
 
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PostSerializer
@@ -135,3 +168,7 @@ class DraftViewSet(viewsets.ModelViewSet):
     #     instance = models.Post.objects.get(pk=pk)
     #     instance.delete()    
     #     return Response(status=202)
+
+class UploadPicView(viewsets.ModelViewSet):
+    queryset = models.UploadPic.objects.all()
+    serializer_class = serializers.UploadPicSerializer

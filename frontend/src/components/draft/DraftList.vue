@@ -1,11 +1,10 @@
 <template>
-    <div class="box">
         <div class="container">
             <div class="row">
+                <p style="float: right">activities</p>
                 <app-Draft v-for="draft in drafts" :key="draft.id" :draft="draft"></app-Draft>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -23,3 +22,6 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+</style>

@@ -1,10 +1,26 @@
 from rest_framework import serializers
 from app import models
 
+class UploadPicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.UploadPic
+        fields = '__all__'
+
+    def create(self, validated_data):
+        print(validated_data)
+        uploadedPic = models.UploadPic.objects.create(**validated_data)
+        return uploadedPic
+
+    def update(self, instance, validated_data):
+        instance.image_file = validated_data.get('image_file',instance.image_file)
+        instance.save()
+        return instance
+
 class UserProfileSerialzer(serializers.ModelSerializer):
+    image = UploadPicSerializer(read_only=True,required=False)
     class Meta:
         model = models.UserProfile
-        fields = ('id','email','name','password')
+        fields = ('id','email','name','password','image')
         extra_kwargs = {'password':{'write_only':True}}
 
     def create(self,validated_data):
@@ -33,7 +49,7 @@ class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(many=True,required=False)
     class Meta:
         model = models.Post
-        fields = ('id','user_profile','title','gener','text','created_on','published_on','image','comments')
+        fields = ('id','user_profile','title','gener','text','created_on','published_on','comments')
         extra_kwargs = {'user_profile':{'read_only':True},'published_on':{'read_only':True},}
         depth = 1
 
@@ -54,4 +70,4 @@ class DraftSerializer(serializers.ModelSerializer):
         instance.text = validated_data.get('text', instance.text)
         instance.save()
         return instance
-
+    

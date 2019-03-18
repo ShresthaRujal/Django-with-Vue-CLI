@@ -1,0 +1,14 @@
+# frontend
+npm
+vuejs
+vuex
+vusax
+vuex-persistedstate
+
+# backend
+python 3.x
+django-webpack_loader
+djangorestframework
+django-cors-headers
+apscheduler (https://apscheduler.readthedocs.io/en/latest/userguide.html)
+

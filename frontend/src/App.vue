@@ -1,12 +1,15 @@
 <template>
   <div class="container">
-    <app-header></app-header>
-      <div class="col-md-12">
-        <!-- <transition name="slide" mode="out-int"> -->
-          <router-view></router-view>
-        <!-- </transition> -->
-      </div>
-  </div>
+
+      <app-header></app-header>
+      <div class="box2">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <router-view></router-view>
+            </div>
+          </nav>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -27,7 +30,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+  .box2{
+    margin-top: 10px;
+  }
 .slide-enter-active {
   animation: slide-in 200ms ease-out forwards;
 }

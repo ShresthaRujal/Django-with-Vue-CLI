@@ -10,7 +10,7 @@ from app.serializers import UserProfileSerialzer
 def start():
     '''start scheduling job'''
     scheduler = BackgroundScheduler()
-    scheduler.add_job(send_signupEmail, 'interval', minutes=1)
+    scheduler.add_job(send_signupEmail, 'interval', minutes=360)
     scheduler.start()
 
 def send_signupEmail():

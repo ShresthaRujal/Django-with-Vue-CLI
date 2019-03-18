@@ -21,6 +21,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,'app/templates')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'cmawzu2(3=unypmk!xsotcsy_7hvr06t#-hrf9_80f*t3%79!6'
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 1024000
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -179,6 +180,6 @@ WEBPACK_LOADER={
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'zeroxlucifer24@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_PASSWORD = 'asdfghjkl9843049192'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS =True

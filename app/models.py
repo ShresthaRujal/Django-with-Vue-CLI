@@ -3,6 +3,10 @@ from django.shortcuts import render,get_object_or_404
 from django.utils import timezone
 from django.contrib.auth.models import AbstractBaseUser,PermissionsMixin,BaseUserManager
 
+
+def upload_status_image(instance,filename):
+    return "status/{user}/{filename}".format(user=instance.user_profile,filename=filename)
+
 # Create your models here.
 class UserProfileManager(BaseUserManager):
 
@@ -48,6 +52,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
+    @property
+    def image(self):
+        image = self.uploadpic
+        return image
+
 
 class ProfileFeedItem(models.Model):
     user_profile =models.ForeignKey('UserProfile',on_delete=models.CASCADE)
@@ -58,11 +67,6 @@ class ProfileFeedItem(models.Model):
         return self.status_text
 
 # class PostManager(models.Manager):
-
-  
-def upload_status_image(instance,filename):
-    return "status/{user}/{filename}".format(user=instance.user_profile,filename=filename)
-
 class Post(models.Model):
     user_profile = models.ForeignKey(UserProfile,on_delete= models.CASCADE)
     title = models.CharField(max_length=255)
@@ -70,7 +74,6 @@ class Post(models.Model):
     gener = models.CharField(max_length=100)
     created_on = models.DateTimeField(auto_now_add=True)
     published_on = models.DateTimeField(null = True)
-    image = models.ImageField(upload_to=upload_status_image,null=True,blank=True)
 
     # objects = PostManager()
 
@@ -98,3 +101,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.author
+
+class UploadPic(models.Model):
+    user_profile = models.OneToOneField(UserProfile,blank=True,null=True, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post,blank=True,null=True,on_delete=models.CASCADE)
+    image_file = models.ImageField(upload_to=upload_status_image,null=True,blank=True)

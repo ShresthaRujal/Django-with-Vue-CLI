@@ -18,9 +18,9 @@ const mutations = {
     loginSuccess: (state,user) => {
         state.isLoggedIn = true;
         state.user = user;
+        state.user.image.image_file=new URL(user.image.image_file,Vue.http.options.root).href
         users.state.userx =user;
         state.user.name = user.name.toUpperCase();
-        console.log(user.image)
         router.push('/posts')
     },
 

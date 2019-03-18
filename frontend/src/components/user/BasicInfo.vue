@@ -35,7 +35,7 @@
                          <li>
                              <div class="row">
                                  <div class="col-md-4">Email </div>             
-                                <div class="col-md-8">rujal@gmail.com</div>
+                                <div class="col-md-8">{{getUser.email}}</div>
                              </div>
                              <hr>
                          </li>
@@ -45,7 +45,12 @@
 
 <script>
 export default {
-    
+    computed:{
+         getUser(){
+            this.user = this.$store.getters.user;
+            return this.user;
+        }
+    },
 }
 </script>
 

@@ -1,6 +1,7 @@
 <template>
 <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-        <div class="box-part text-center shadow p-3 mb-5 bg-white rounded">
+
+  <div class="box-part text-center shadow p-3 mb-5 bg-white rounded">
             <div class="card-header">
 				<h4 class="my-0 font-weight-normal">{{draft.title}}</h4>
 			</div>
